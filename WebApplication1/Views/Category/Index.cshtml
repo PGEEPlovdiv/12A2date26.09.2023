@@ -1,0 +1,83 @@
+﻿@model IEnumerable<WebApplication1.Models.Category>
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<style>
+    .creator {
+        background-color: #f8f9fa;
+        border: solid;
+        border-radius: 5px;
+        border-width: 1px;
+        border-color: gray;
+        position: absolute;
+        height: 10rem;
+        width: 12rem;
+        left: 15%;
+        top: 10%;
+        display: none;
+    }
+</style>
+
+<div id="create-button" class="btn btn-primary" onclick="activateCreator()">Create New</div>
+<div id="creator" class="creator">
+    <form style="text-align:center;">
+        <input type="hidden" value="0" />
+        <p>Name</p>
+        <input type="text" aria-required="true" style="width:10rem; position:absolute; top:15%; left:50%; transform:translateX(-50%)" />
+        <button type="submit" class="btn btn-info text-white" style="position:absolute; left:50%; transform:translateX(-50%); top:70%;">Submit</button>
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DisplayOrder)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisplayOrder)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    let creatorActive = false;
+    let creator = document.getElementById("creator");
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("click", function (event) {
+            console.log("proba");
+            if (creatorActive) {
+                if (event.target !== creator && !creator.contains(event.target)) {
+                    creator.style.display = 'none';
+                    creatorActive = false;
+                }
+            }
+        });
+    });
+
+    function activateCreator() {
+        creatorActive = true;
+        creator.style.display = "block";
+    }
+</script>
